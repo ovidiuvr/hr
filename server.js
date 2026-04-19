@@ -5,50 +5,40 @@ const cors = require('cors');
 
 const app = express();
 
-// 1. Middlewares
+// 1. Permite accesul din exterior (CORS) și procesarea datelor JSON
 app.use(cors());
 app.use(express.json());
 
-// 2. Servirea fișierelor statice (Asigură-te că index.html e lângă server.js)
-// Această linie spune serverului să livreze tot ce e în folderul curent
-app.use(express.static(__dirname));
+// 2. Servirea fișierelor statice
+// Spune serverului să caute index.html, tool.js etc. în folderul principal
+app.use(express.static(path.join(__dirname)));
 
-// 3. Conexiunea MongoDB (Folosește variabila MONGO_URI din Render)
+// 3. Conexiunea la MongoDB Atlas (folosește variabila MONGO_URI din Render)
 const mongoURI = process.env.MONGO_URI;
 
-if (!mongoURI) {
-    console.error("❌ EROARE: Variabila MONGO_URI nu este setată în Render -> Environment!");
-} else {
+if (mongoURI) {
     mongoose.connect(mongoURI)
-        .then(() => console.log('✅ Conectat cu succes la MongoDB Atlas'))
-        .catch(err => console.error('❌ Eroare conexiune MongoDB:', err));
+        .then(() => console.log('✅ MongoDB conectat cu succes!'))
+        .catch(err => console.error('❌ Eroare conectare MongoDB:', err));
+} else {
+    console.log('⚠️ Atenție: MONGO_URI nu este configurat în Environment Variables.');
 }
 
-// 4. Definire Schema (Exemplu pentru Angajați)
-const EmployeeSchema = new mongoose.Schema({
-    nume: String,
-    functie: String,
-    departament: String
-});
-const Employee = mongoose.model('Employee', EmployeeSchema);
-
-// 5. Rute API
-app.get('/api/employees', async (req, res) => {
-    try {
-        const employees = await Employee.find();
-        res.json(employees);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+// 4. Rută API de test (opțional)
+app.get('/api/status', (req, res) => {
+    res.json({ status: "Serverul HR este online!" });
 });
 
-// 6. Traseul principal (Trimite index.html când cineva accesează site-ul)
+// 5. RUTA CRITICĂ: Trimite index.html pentru orice adresă necunoscută
+// Asta elimină eroarea "Not Found" la refresh
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 7. Setare Port Dinamic (CRITIC pentru Render)
+// 6. PORT DINAMIC (Cel mai important pentru Render)
+// Render va injecta automat un port, dacă nu, folosim 3000 local
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-    console.log(`🚀 Server UP: http://localhost:${PORT}`);
+    console.log(`🚀 Server UP la adresa: http://localhost:${PORT}`);
 });

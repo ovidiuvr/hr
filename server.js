@@ -1,44 +1,40 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import path from 'path';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
+
+// Configurare pentru a putea folosi __dirname în mod "Module"
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// 1. Permite accesul din exterior (CORS) și procesarea datelor JSON
+// 1. Middlewares
 app.use(cors());
 app.use(express.json());
 
-// 2. Servirea fișierelor statice
-// Spune serverului să caute index.html, tool.js etc. în folderul principal
-app.use(express.static(path.join(__dirname)));
+// 2. Servirea fișierelor statice (index.html, tool.js, etc.)
+app.use(express.static(__dirname));
 
-// 3. Conexiunea la MongoDB Atlas (folosește variabila MONGO_URI din Render)
+// 3. Conexiunea la MongoDB Atlas
 const mongoURI = process.env.MONGO_URI;
 
 if (mongoURI) {
     mongoose.connect(mongoURI)
         .then(() => console.log('✅ MongoDB conectat cu succes!'))
-        .catch(err => console.error('❌ Eroare conectare MongoDB:', err));
+        .catch(err => console.error('❌ Eroare conexiune MongoDB:', err));
 } else {
-    console.log('⚠️ Atenție: MONGO_URI nu este configurat în Environment Variables.');
+    console.warn('⚠️ ATENȚIE: MONGO_URI nu este configurat în Render!');
 }
 
-// 4. Rută API de test (opțional)
-app.get('/api/status', (req, res) => {
-    res.json({ status: "Serverul HR este online!" });
-});
-
-// 5. RUTA CRITICĂ: Trimite index.html pentru orice adresă necunoscută
-// Asta elimină eroarea "Not Found" la refresh
-app.get('*', (req, res) => {
+// 4. Ruta pentru a servi pagina principală
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 6. PORT DINAMIC (Cel mai important pentru Render)
-// Render va injecta automat un port, dacă nu, folosim 3000 local
+// 5. Portul dinamic (ESENȚIAL pentru Render)
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
-    console.log(`🚀 Server UP la adresa: http://localhost:${PORT}`);
+    console.log(`🚀 Server online pe portul ${PORT}`);
 });

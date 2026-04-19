@@ -2,39 +2,56 @@ import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
 import cors from 'cors';
+import bcrypt from 'bcrypt';
 import { fileURLToPath } from 'url';
 
-// Configurare pentru a putea folosi __dirname în mod "Module"
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
-// 1. Middlewares
 app.use(cors());
 app.use(express.json());
-
-// 2. Servirea fișierelor statice (index.html, tool.js, etc.)
 app.use(express.static(__dirname));
 
-// 3. Conexiunea la MongoDB Atlas
-const mongoURI = process.env.MONGO_URI;
+// CONEXIUNE MONGODB
+const mongoURI = process.env.MONGO_URI || "adresa_ta_din_env";
+mongoose.connect(mongoURI)
+    .then(() => console.log('✅ MongoDB Conectat'))
+    .catch(err => console.error('❌ Eroare MongoDB:', err));
 
-if (mongoURI) {
-    mongoose.connect(mongoURI)
-        .then(() => console.log('✅ MongoDB conectat cu succes!'))
-        .catch(err => console.error('❌ Eroare conexiune MongoDB:', err));
-} else {
-    console.warn('⚠️ ATENȚIE: MONGO_URI nu este configurat în Render!');
-}
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+const User = mongoose.model('User', userSchema);
 
-// 4. Ruta pentru a servi pagina principală
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// ÎNREGISTRARE
+app.post('/api/register', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ username, password: hashedPassword });
+        await newUser.save();
+        res.status(201).json({ success: true, message: "Cont creat cu succes!" });
+    } catch (err) {
+        res.status(400).json({ success: false, message: "Eroare la înregistrare." });
+    }
 });
 
-// 5. Portul dinamic (ESENȚIAL pentru Render)
+// LOGIN
+app.post('/api/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
+        if (user && await bcrypt.compare(password, user.password)) {
+            res.json({ success: true, user: { username: user.username } });
+        } else {
+            res.status(401).json({ success: false, message: "Date incorecte!" });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Eroare server." });
+    }
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Server online pe portul ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

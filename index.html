@@ -2,26 +2,26 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>HR PRO - Test Modular</title>
-    <style>
-        body { margin: 0; font-family: sans-serif; background: #0f172a; color: white; }
-        .layout { display: flex; min-height: 100vh; }
-        .sidebar { width: 220px; background: #1e293b; padding: 20px; border-right: 1px solid #334155; }
-        .sidebar button { width: 100%; padding: 12px; margin-bottom: 10px; cursor: pointer; background: #334155; color: white; border: none; border-radius: 6px; transition: 0.3s; }
-        .sidebar button:hover { background: #38bdf8; }
-        main { flex: 1; padding: 40px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR PRO</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="layout">
-        <nav class="sidebar">
-            <h2 style="color: #38bdf8;">HR PRO</h2>
-            <button onclick="nav('test')">🧪 Modul Test</button>
-            <button onclick="nav('dashboard')">🏠 Dashboard</button>
-        </nav>
-        <main id="app-view">
-            </main>
-    </div>
+    <nav style="background: #1a1a2e; padding: 10px; display: flex; gap: 10px;">
+        <button onclick="nav('dashboard')" style="padding: 5px 15px; cursor: pointer;">🏠 Dashboard</button>
+    </nav>
+
+    <main id="main-content" style="padding: 20px;">
+        <p>Se încarcă aplicația...</p>
+    </main>
+
     <script type="module" src="js/app.js"></script>
+
+    <script>
+        // Funcție simplă pentru butoanele din navigație
+        window.nav = function(pagina) {
+            console.log("Navigăm la:", pagina);
+        };
+    </script>
 </body>
 </html>

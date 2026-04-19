@@ -1,8 +1,5 @@
-import { initSidebar } from '../modules/sidebar.js';
+import { router } from './tool.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("HR App a pornit cu succes!");
-    
-    // Inițializăm meniul lateral
-    initSidebar();
-});
+window.nav = function(pagina) {
+    router(pagina);
+};

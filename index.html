@@ -3,20 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Manager Pro</title>
+    <title>HR App - Dashboard</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/sidebar.css">
 </head>
 <body>
-    <div class="layout" style="display: flex;">
-        <div id="sidebar-container"></div>
-        <main class="content" style="flex: 1; padding: 20px; background: #0f172a; color: white; min-height: 100vh;">
-            <header>
-                <h1 id="page-title">Tablou de Bord</h1>
-            </header>
-            <div id="app-view"></div>
-        </main>
-    </div>
+
+    <!-- Buton pentru mobil -->
+    <button id="toggle-btn" class="toggle-btn">☰</button>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>HR App</h3>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active">Dashboard</a>
+            <a href="#" class="menu-item">Personal</a>
+            <a href="#" class="menu-item">Organigramă</a>
+            <a href="#" class="menu-item">Acte</a>
+            <a href="#" class="menu-item">Rapoarte</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <h1>Bine ai venit, Ovidiu</h1>
+        <p>Selectează o opțiune din meniul lateral.</p>
+    </main>
+
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

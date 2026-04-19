@@ -3,33 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR PRO</title>
+    <title>HR PRO - Panou de Control</title>
     <style>
-        /* Stiluri de bază pentru un aspect modern */
+        /* Resetare și stiluri de bază */
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #1a1a2e; 
-            color: white; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
             margin: 0; 
-            padding: 20px;
+            background-color: #1a1a2e; 
+            color: #ffffff;
         }
-        h1 { color: #e94560; border-bottom: 2px solid #533483; padding-bottom: 10px; }
+
+        /* Container principal Flexbox */
+        .app-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar - Meniul lateral */
+        #sidebar {
+            width: 250px;
+            background-color: #16213e;
+            border-right: 2px solid #533483;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #sidebar h2 {
+            color: #e94560;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Butoanele din Sidebar */
+        .nav-btn {
+            background: #0f3460;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #e94560;
+            transform: translateX(5px);
+        }
+
+        /* Zona principală de conținut */
+        #main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        /* Stil pentru cardurile pe care le generează modulele */
         .card { 
             background: #16213e; 
             border: 1px solid #533483; 
-            border-radius: 10px; 
-            padding: 15px; 
-            margin-bottom: 15px;
-            max-width: 300px;
+            border-radius: 12px; 
+            padding: 20px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .card h3 { margin-top: 0; color: #0f3460; background: #e94560; display: inline-block; padding: 2px 10px; border-radius: 5px; }
+
+        h1, h3 { color: #e94560; }
     </style>
 </head>
 <body>
-    <main id="main-content">
-        <p>Se încarcă...</p>
-    </main>
+
+    <div class="app-wrapper">
+        <aside id="sidebar">
+            <h2>HR PRO</h2>
+            <button class="nav-btn" onclick="nav('dashboard')">🏠 Dashboard</button>
+            <button class="nav-btn" onclick="nav('organizare')">🏢 Organizare</button>
+            <button class="nav-btn" onclick="nav('personal')">👥 Personal</button>
+        </aside>
+
+        <main id="main-content">
+            <p>Se încarcă aplicația...</p>
+        </main>
+    </div>
 
     <script type="module" src="js/app.js"></script>
+
 </body>
 </html>

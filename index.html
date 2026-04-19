@@ -4,24 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR PRO</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Stiluri de bază pentru un aspect modern */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #1a1a2e; 
+            color: white; 
+            margin: 0; 
+            padding: 20px;
+        }
+        h1 { color: #e94560; border-bottom: 2px solid #533483; padding-bottom: 10px; }
+        .card { 
+            background: #16213e; 
+            border: 1px solid #533483; 
+            border-radius: 10px; 
+            padding: 15px; 
+            margin-bottom: 15px;
+            max-width: 300px;
+        }
+        .card h3 { margin-top: 0; color: #0f3460; background: #e94560; display: inline-block; padding: 2px 10px; border-radius: 5px; }
+    </style>
 </head>
 <body>
-
-    <nav style="background: #1a1a2e; padding: 15px; display: flex; gap: 10px;">
-        <button onclick="nav('dashboard')" style="cursor: pointer; padding: 5px 15px;">🏠 Dashboard</button>
-    </nav>
-
-    <main id="main-content" style="padding: 20px;">
-        <p>Se încarcă aplicația...</p>
+    <main id="main-content">
+        <p>Se încarcă...</p>
     </main>
 
     <script type="module" src="js/app.js"></script>
-
-    <script>
-        window.nav = function(pagina) {
-            console.log("Navigăm la:", pagina);
-        };
-    </script>
 </body>
 </html>
